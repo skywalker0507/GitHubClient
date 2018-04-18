@@ -1,48 +1,52 @@
 package com.skywalker.github
 
 
+import com.skywalker.github.api.GetTree
 import com.skywalker.github.api.SearchRepositories
+import com.skywalker.github.api.SearchTopics
 
 import org.junit.Test
 
-import java.io.IOException
-import io.reactivex.Observer
-import io.reactivex.disposables.Disposable
-import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 class APITest {
-    @Test
-    fun testSearch() {
 
-        val retrofit = Retrofit.Builder()
+    private val retrofit1:Retrofit = Retrofit.Builder()
+            .baseUrl("https://api.github.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+    @Test
+    fun testSearch1() {
+
+        val repositories = retrofit1.create(SearchRepositories::class.java)
+        val body1 = repositories.repositories("anko",1,2)
+
+
+
+    }
+
+    @Test
+    fun testSearch2() {
+
+        val retrofit2 = Retrofit.Builder()
                 .baseUrl("https://api.github.com/")
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(SearchTopics.httpClient)
                 .build()
-        val repositories = retrofit.create(SearchRepositories::class.java)
-        val body = repositories.repositories("anko",1,2)
-        body.subscribe(object : Observer<ResponseBody> {
-            override fun onSubscribe(d: Disposable) {
+        val topics=retrofit2.create(SearchTopics::class.java)
+        val body2 = topics.topics("ruby",1,2)
 
-            }
+    }
 
-            override fun onNext(responseBody: ResponseBody) {
-                try {
-                    println(responseBody.string())
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-
-            }
-
-            override fun onError(e: Throwable) {
-                println(e.message)
-            }
-
-            override fun onComplete() {
-
-            }
-        })
+    @Test
+    fun testTree(){
+        val tree=retrofit1.create(GetTree::class.java)
+        val body3=tree.tree("skywalker0507","iDouban")
+        body3.subscribe {
+            println(it.string())
+        }
     }
 }
