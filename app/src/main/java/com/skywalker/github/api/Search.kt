@@ -1,12 +1,14 @@
 package com.skywalker.github.api
 
 import android.arch.lifecycle.LiveData
+import com.skywalker.github.model.Repositories
 import com.skywalker.github.model.UserItem
 import com.skywalker.github.model.Repository
 import com.skywalker.github.model.TopicsItem
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -17,7 +19,7 @@ interface SearchRepositories{
             @Query("page")page:Int,
             @Query("per_page")itemsPerPage: Int,
             @Query("sort")type:String="stars"
-    ):LiveData<List<Repository>>
+    ): Call<Repositories>
 
 }
 
@@ -42,7 +44,10 @@ interface SearchTopics{
                     .header("Accept", "application/vnd.github.mercy-preview+json") // <-- this is the important line
 
             val request = requestBuilder.build()
+            println("before")
+
             return@addInterceptor it.proceed(request)
+
         }.build()
     }
 

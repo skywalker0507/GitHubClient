@@ -2,6 +2,7 @@ package com.skywalker.github
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
+import android.util.Log
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,5 +21,21 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
         assertEquals("com.skywalker.github", appContext.packageName)
+    }
+
+
+    fun hideTest(){
+
+    }
+
+    @Test
+    fun printTest(){
+
+
+        val clazz= Log::class.java
+        //val t=clazz.methods
+        //println(t)
+        val method=clazz.getMethod("println",Int::class.java, String::class.java, String::class.java)
+        method.invoke(null, 6,"123","abc")
     }
 }

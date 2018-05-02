@@ -1,5 +1,6 @@
 package com.skywalker.github.model
 
+data class Repositories(val total_count:Int,val items:List<Repository>)
 data class Repository(
         val name:String,
         val full_name:String,

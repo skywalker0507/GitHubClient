@@ -22,9 +22,8 @@ class APITest {
     fun testSearch1() {
 
         val repositories = retrofit1.create(SearchRepositories::class.java)
-        val body1 = repositories.repositories("anko",1,2)
-
-
+        val body1 = repositories.repositories("anko",1,2).execute()
+        println(body1.body())
 
     }
 
@@ -38,7 +37,7 @@ class APITest {
                 .build()
         val topics=retrofit2.create(SearchTopics::class.java)
         val body2 = topics.topics("ruby",1,2)
-
+        println(body2.value)
     }
 
     @Test
